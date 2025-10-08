@@ -9,10 +9,15 @@ def main() -> None:
     '''Запускаем бесконечный цикл, чтобы пользователь мог находить значения выражения без перезапуска, \
     пока не напишет 'exit' - регистр не учитывается'''
     while True:
-        expression = input("Введите выражение для подсчета калькулятором\n")
+        expression = input("Введите выражение для подсчета калькулятором\n").replace(' ', '')
         if expression.lower() == "exit":
             break
-        print("Результат: " + str(calculate(expression)))
+        try:
+            print("Результат: " + str(calculate(expression)))
+        except ZeroDivisionError as error:
+            print(error)
+        except Exception as error:
+            print(error)
 
 if __name__ == "__main__":
     main()

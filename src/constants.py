@@ -1,10 +1,24 @@
-OPERATORS_ADD = ["+", "-"]
+import operator
 
-OPERATORS_MUL=["*", "/", "//", "%"]
+OPERATORS_ADD = {
+    "+": operator.add,
+    "-": operator.sub
+}
 
-OPERATORS_POW = ["**"]
+OPERATORS_MUL={
+    "*": operator.mul,
+    "/": operator.truediv,
+    "//": operator.floordiv,
+    "%": operator.mod
+}
 
-UNARY_OPERATORS = ["+", "-"]
+OPERATORS_POW = {
+    "**": operator.pow,
+}
+
+UNARY_OPERATORS = {"+", "-"}
+
+ALL_OPERATORS = ['*', '/', '//', '%', '**', '+', '-']
 
 ERROR_COMBINATION = ['%+', '%-', '%/', '%*', '%//', '%**', '+%', '+-', '+/',
                      '+*', '+//', '+**','-%', '-+', '-/', '-*', '-//', '-**', '/%', '/+', '/-', '/*', '///',
