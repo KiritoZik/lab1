@@ -1,9 +1,16 @@
 from src.constants import OPERATORS_ADD, OPERATORS_MUL, OPERATORS_POW, UNARY_OPERATORS
+import string
 # Основная функция для вычисления значения выражения.
 def parse_expression(tokens: list) -> float:
 
-    now_token = 0
-    result = add_function(tokens, now_token)
+    now_token_index = 0
+    for index in range(len(tokens)):
+        token = tokens[index]
+        if all(x in string.digits for x in token):
+            tokens[index] = float(token)
+    print(tokens)
+    result = add_function(tokens, now_token_index)
+    return result
 '''
     if tokens.count("(") != tokens.count(")"):
         return "Ошибка"
@@ -28,24 +35,24 @@ def parse_expression(tokens: list) -> float:
     return add_function(tokens, now_token)
 '''
 # Функция
-def add_function(tokens: list, now_token: int) -> float:
-    left_token = mul_function(tokens, now_token)
-    while now_token < len(tokens):
-        if tokens[now_token] in OPERATORS_ADD:
-            operation = tokens[now_token]
-            now_token += 1
-            right_token = mul_function(tokens, now_token)
+def add_function(tokens: list, now_token_index: int) -> float:
+    left_token = mul_function(tokens, now_token_index)
+    while now_token_index < len(tokens):
+        if tokens[now_token_index] in OPERATORS_ADD:
+            operation = tokens[now_token_index]
+            now_token_index += 1
+            right_token = mul_function(tokens, now_token_index)
             left_token = add_operation(left_token, operation, right_token)
     return left_token
 
-def mul_function(tokens: list, now_token: int) -> float:
-    left_token = power_function(tokens, now_token)
-    while now_token < len(tokens):
-        if tokens[now_token] in OPERATORS_MUL:
-            operator = tokens[now_token]
-            now_token += 1
-            right_token = power_function(tokens, now_token)
-            if operator in '/%//' and right_token == 0.0:
+def mul_function(tokens: list, now_token_index: int) -> float:
+    left_token = power_function(tokens, now_token_index)
+    while now_token_index < len(tokens):
+        if tokens[now_token_index] in OPERATORS_MUL:
+            operator = tokens[now_token_index]
+            now_token_index += 1
+            right_token = power_function(tokens, now_token_index)
+            if operator in '/%//' and right_token == '0.0':
                 raise ZeroDivisionError("ДЕЛИТЬ НА НОЛЬ НЕЛЬЗЯ, БИТЮКОВ НАКАЖЕТ!!!")
             if operator in '//%':
                 if ((str(right_token)[-2] + str(right_token)[-1]) in '.0') and (str(right_token)[-2] + str(right_token)[-1]) in '.0':
@@ -58,27 +65,27 @@ def mul_function(tokens: list, now_token: int) -> float:
     return left_token
 
 
-def power_function(tokens: list, now_token: int) -> float:
-    left_token = unary_function(tokens, now_token)
-    while now_token < len(tokens):
-        if tokens[now_token] in OPERATORS_POW:
-            now_token += 1
-            right_token = power_function(tokens, now_token)
+def power_function(tokens: list, now_token_index: int) -> float:
+    left_token = unary_function(tokens, now_token_index)
+    while now_token_index < len(tokens):
+        if tokens[now_token_index] in OPERATORS_POW:
+            now_token_index += 1
+            right_token = power_function(tokens, now_token_index)
             left_token = left_token ** right_token
     return left_token
 
 
-def unary_function(tokens: list, now_token: int) -> float:
-    if tokens[now_token] in UNARY_OPERATORS:
-        unary = tokens[now_token]
-        now_token += 1
-        digit = primary_function(tokens, now_token)
+def unary_function(tokens: list, now_token_index: int) -> float:
+    if tokens[now_token_index] in UNARY_OPERATORS:
+        unary = tokens[now_token_index]
+        now_token_index += 1
+        digit = primary_function(tokens, now_token_index)
         if unary == '+':
             return digit
         elif unary == '-':
             return -digit
 
-    return primary_function(tokens, now_token)
+    return primary_function(tokens, now_token_index)
 
 
 def primary_function(tokens: list, now_token_index: int) -> float:
@@ -86,7 +93,7 @@ def primary_function(tokens: list, now_token_index: int) -> float:
     if now_token == '(':
         now_token_index += 1
         result = add_function(tokens, now_token_index)
-        if (len(tokens) <= now_token) or tokens[now_token_index]  != ')':
+        if (len(tokens) <= now_token_index) or tokens[now_token_index]  != ')':
             raise ValueError("СКОБКИ НЕ ЗАКРЫТЫ")
         now_token_index += 1
         return result
