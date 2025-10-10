@@ -63,7 +63,7 @@ def calculate(expression: str) -> float:
 
     result = expr(tokens)
     point_index = str(result).find('.')
-    if len(str(result)[point_index:]) > 2:
+    if len(str(result)[point_index+1:]) > 2:
         number = input("Полученный ответ имеет более двух разрядов после 'запятой'."
                        "Введите до какого знака после 'запятой' нужно округлить, или любой ввод, если округление не нужно\n")
         if number.isdigit():
