@@ -6,16 +6,20 @@ def main() -> None:
     :return: Данная функция ничего не возвращает
     """
 
-    '''Запускаем бесконечный цикл, чтобы пользователь мог находить значения выражения без перезапуска, \
-    пока не напишет 'exit' - регистр не учитывается'''
+    '''Запускаем 'бесконечный' цикл, чтобы пользователь мог находить значения выражения без перезапуска, 
+    пока не напишет 'exit' или 'выход' - регистр не учитывается'''
     while True:
-        expression = input("Введите выражение для подсчета калькулятором\n").replace(' ', '')
-        if expression.lower() == "exit":
+        expression = input("Введите выражение для подсчета калькулятором\n")
+        if expression.lower() == "exit" or  expression.lower() == 'выход':
             break
         try:
-            print("Результат: " + str(calculate(expression)))
-        except ZeroDivisionError as error:
-            print(error)
+            result = calculate(expression)
+            if result.is_integer():
+                print("Результат: " + str(int(result)))
+            else:
+                print("Результат: " + str(result))
+        except OverflowError:
+            print("Слишком большое значение")
         except Exception as error:
             print(error)
 

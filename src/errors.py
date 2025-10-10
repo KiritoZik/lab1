@@ -8,9 +8,6 @@ class NullBracketError(Exception):
 class InvalidCharacterError(Exception):
     pass
 
-class FirstBracketError(Exception):
-    pass
-
 class NullExpressionError(Exception):
     pass
 
@@ -33,4 +30,13 @@ class LotPointError(Exception):
     pass
 
 class NotOperatorError(Exception):
+    pass
+
+class UnderscoreError(Exception):
+    pass
+
+class NegativeSqrtError(Exception):
+    pass
+
+class NotNumberError(Exception):
     pass

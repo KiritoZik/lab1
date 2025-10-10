@@ -16,7 +16,7 @@ OPERATORS_POW = {
     "**": operator.pow,
 }
 
-UNARY_OPERATORS = {"+", "-"}
+UNARY_OPERATORS = ["+", "-"]
 
 ALL_OPERATORS = ['*', '/', '//', '%', '**', '+', '-']
 
