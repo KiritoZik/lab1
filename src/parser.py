@@ -54,8 +54,8 @@ def mul(tokens: list, now_token_index: int) -> tuple[float, int]:
                 left_token = OPERATORS_MUL[operator](left_token, right_token)
             else:
                 raise ZeroDivisionError("Деление на ноль карается Битюковым ")
-        if operator == '//' or operator == '%':
-            if right_token == 0.0 or left_token == 0.0:
+        if operator in ('//', '%'):
+            if right_token == 0.0:
                 raise ZeroDivisionError("Деление на ноль карается Битюковым")
             if (not right_token.is_integer()) or (not left_token.is_integer()):
                 raise IntegerOperationError(f"Операция {operator} только для целых чисел")
