@@ -40,3 +40,4 @@ class NegativeSqrtError(Exception):
 
 class NotNumberError(Exception):
     pass
+
