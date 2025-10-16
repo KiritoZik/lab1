@@ -21,16 +21,18 @@ def calculate(expression: str) -> float:
     if all(not is_number(token) for token in tokens):
         raise NotNumberError("Нет числовых значений")
 
-    if '()' in expression.replace(' ', ''):
+    expression = expression.replace(' ', '')
+
+    if '()' in expression:
         raise NullBracketError("Скобки не могут быть пустыми")
 
-    if any(op in expression.replace(' ', '') for op in ERROR_COMBINATION):
+    if any(op in expression for op in ERROR_COMBINATION):
         raise LotOperatorError("Два оператора и более не могут стоять подряд")
 
-    if ')(' in expression.replace(' ', ''):
+    if ')(' in expression:
         raise SeamBracketsError("Между скобками должен быть оператор")
 
-    if '..' in expression.replace(' ', ''):
+    if '..' in expression:
         raise LotPointError("Более одной точки подряд быть не может")
 
     if tokens[-1] in ALL_OPERATORS:
@@ -46,15 +48,15 @@ def calculate(expression: str) -> float:
         raise NotOperatorError("Нет бинарных операторов")
 
     for index in range(len(tokens)):
-        try:
-            tokens[index] = float(tokens[index])
-        except ValueError:
-            if (tokens[index] not in ALL_OPERATORS) and (tokens[index] not in '()_'):
+        if (tokens[index] not in ALL_OPERATORS) and (tokens[index] not in '()_'):
+            try:
+                tokens[index] = float(tokens[index])
+            except ValueError:
                 raise InvalidCharacterError(f"Введен недопустимый символ: {tokens[index]}")
 
     all_index = [index for index in range(len(tokens)) if tokens[index] == "_"]
     if (str(tokens[0]) in '_' or str(tokens[-1]) in '_'
-            or any((type(tokens[index - 1]) != float) or (type(tokens[index + 1]) != float) for index in all_index)):
+            or any( (type(tokens[index - 1]) is float) or (type(tokens[index + 1]) is float) for index in all_index) ):
         raise UnderscoreError("Нижнее подчеркивание должно стоять между числами числа")
 
 
@@ -67,6 +69,5 @@ def calculate(expression: str) -> float:
         number = input("Полученный ответ имеет более двух разрядов после 'запятой'."
                        "Введите до какого знака после 'запятой' нужно округлить, или любой ввод, если округление не нужно\n")
         if number.isdigit():
-            number = int(number)
-            result = round(result, number)
+            result = round(result, int(number))
     return result
