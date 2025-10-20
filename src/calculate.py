@@ -10,7 +10,7 @@ from src.errors import (CountBracketError, NullBracketError, \
 def calculate(expression: str) -> float:
     """
     Функция, где происходит большая часть обработки ошибок и переход в начало рекурсивного спуска
-    :param expression:
+    :param expression: искомое выражение
     :return: возвращает значение арифметического выражения
     """
     tokens = tokenizer(expression)
@@ -68,6 +68,17 @@ def calculate(expression: str) -> float:
     if len(str(result)[point_index+1:]) > 2:
         number = input("Полученный ответ имеет более двух разрядов после 'запятой'."
                        "Введите до какого знака после 'запятой' нужно округлить, или любой ввод, если округление не нужно\n")
-        if number.isdigit():
-            result = round(result, int(number))
+        result = lot_float(result, number)
+    return result
+
+
+def lot_float(result:float, number:str) -> float:
+    """
+    Функция, которая выдает ответ в виде заданного количества знаков после запятой.
+    :param number: Строка, которая задает.
+    :param result: Искомый ответ, у которого после запятой больше 2 знаков
+    :return: ответ, округленный до заданного количества знаков после запятой
+    """
+    if number.isdigit():
+        result = round(result, int(number))
     return result
